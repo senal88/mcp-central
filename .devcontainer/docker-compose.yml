@@ -1,0 +1,85 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: mcp-central-dev
+
+    volumes:
+      - ../..:/workspaces:cached
+      - node_modules:/workspaces/mcp-central/node_modules
+      - pnpm_store:/home/node/.local/share/pnpm/store
+
+    command: /bin/sh -c "while sleep 1000; do :; done"
+
+    environment:
+      - CONTEXT7_API_KEY=${CONTEXT7_API_KEY}
+      - GITHUB_TOKEN=${GITHUB_TOKEN}
+      - NODE_ENV=development
+
+    networks:
+      - mcp-network
+
+    ports:
+      - "3000:3000"
+      - "5173:5173"
+      - "8080:8080"
+      - "9229:9229"
+
+    cap_add:
+      - SYS_PTRACE
+
+    security_opt:
+      - seccomp:unconfined
+
+    stdin_open: true
+    tty: true
+
+  redis:
+    image: redis:7-alpine
+    container_name: mcp-central-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - mcp-network
+    command: redis-server --appendonly yes
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: mcp-central-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: mcp_user
+      POSTGRES_PASSWORD: mcp_password
+      POSTGRES_DB: mcp_central
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - mcp-network
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U mcp_user" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  node_modules:
+  pnpm_store:
+  redis_data:
+  postgres_data:
+
+
+networks:
+  mcp-network:
+    driver: bridge
