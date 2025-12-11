@@ -1,0 +1,229 @@
+{
+  "version": "1.0.0",
+  "timestamp": "2025-12-11T00:00:00Z",
+  "metadata": {
+    "project": "Context7 Global Integration",
+    "description": "Estrutura de dados versionada para integração completa do Context7",
+    "author": "luiz.sena88@icloud.com"
+  },
+  "credentials": {
+    "context7": {
+      "api_key": "ctx7sk-dcd49fc6-5ebd-4a61-8a95-caebfd09f032",
+      "mcp_url": "https://mcp.context7.com/mcp",
+      "api_url": "https://context7.com/api/v2",
+      "dashboard_url": "https://context7.com/dashboard",
+      "add_library_url": "https://context7.com/add-library"
+    },
+    "onepassword": {
+      "account_email": "luiz.sena88@icloud.com",
+      "account_user_id": "BOAC3NIIQZBF5CFNGZO36FBRIM",
+      "vaults": {
+        "1p_azure": "zfdghptbnbxjilasq7e2tb3rxi",
+        "1p_macos": "gkpsbgizlks2zknwzqpppnb2ze",
+        "1p_vps": "oa3tidekmeu26nxiier2qbi7v4",
+        "default_importado": "syz4hgfg6c62ndrxjmoortzhia",
+        "personal": "7bgov3zmccio5fxc5v7irhy5k4"
+      }
+    },
+    "github": {
+      "username": "senal88",
+      "email": "luizfernandomoreirasena@gmail.com",
+      "repository": "https://github.com/senal88/mcp-central.git",
+      "branch": "main"
+    }
+  },
+  "environments": {
+    "macos": {
+      "platform": "macOS Silicon",
+      "user": "luiz.sena88",
+      "home_dir": "/Users/luiz.sena88",
+      "shell": "zsh",
+      "config_paths": {
+        "vscode": "$HOME/Library/Application Support/Code/User/settings.json",
+        "cursor": "$HOME/.cursor/mcp.json",
+        "claude": "$HOME/.claude.json",
+        "codex": "$HOME/.codex/config.toml",
+        "gemini": "$HOME/.config/gemini/config.json"
+      }
+    },
+    "vps": {
+      "provider": "Hostinger",
+      "type": "Ubuntu KVM4",
+      "ip": "147.79.81.59",
+      "domain": "senamfo.com.br",
+      "ssh_port": 22,
+      "user": "admin",
+      "orchestrator": "Coolify",
+      "api_integration": "hostinger-api"
+    }
+  },
+  "ides": [
+    {
+      "name": "VS Code",
+      "version": "latest",
+      "config_type": "json",
+      "mcp_config_path": "settings.json",
+      "enabled": true
+    },
+    {
+      "name": "Cursor",
+      "version": "2.1",
+      "config_type": "json",
+      "mcp_config_path": "~/.cursor/mcp.json",
+      "enabled": true
+    },
+    {
+      "name": "Antigravity",
+      "version": "latest",
+      "config_type": "json",
+      "mcp_config_path": "custom",
+      "enabled": true
+    }
+  ],
+  "ai_subscriptions": [
+    "ChatGPT Plus",
+    "Perplexity Pro",
+    "Claude Code Pro",
+    "GitHub Copilot",
+    "Copilot",
+    "Gemini 3.0 Pro"
+  ],
+  "storage_providers": [
+    {"name": "Google Drive", "capacity": "2TB"},
+    {"name": "NordLocker", "capacity": "2TB"},
+    {"name": "OneDrive", "capacity": "varies"}
+  ],
+  "platform_subscriptions": [
+    {"name": "Hugging Face Pro", "features": "1TB dataset + advanced"},
+    {"name": "Abacus.ai", "features": "DeepAgent/ChatLLM"},
+    {"name": "Inner.ai", "features": "AI tools"},
+    {"name": "Adapta One 26", "features": "Platform"}
+  ],
+  "mcp_configurations": {
+    "cursor": {
+      "format": "json",
+      "structure": {
+        "mcpServers": {
+          "context7": {
+            "url": "https://mcp.context7.com/mcp",
+            "headers": {
+              "CONTEXT7_API_KEY": "{{CONTEXT7_API_KEY}}"
+            }
+          }
+        }
+      }
+    },
+    "vscode": {
+      "format": "json",
+      "structure": {
+        "mcp": {
+          "servers": {
+            "context7": {
+              "type": "http",
+              "url": "https://mcp.context7.com/mcp",
+              "headers": {
+                "CONTEXT7_API_KEY": "{{CONTEXT7_API_KEY}}"
+              }
+            }
+          }
+        }
+      }
+    },
+    "codex": {
+      "format": "toml",
+      "structure": "[mcp_servers.context7]\nurl = \"https://mcp.context7.com/mcp\"\nhttp_headers = { \"CONTEXT7_API_KEY\" = \"{{CONTEXT7_API_KEY}}\" }"
+    },
+    "gemini_cli": {
+      "format": "json",
+      "structure": {
+        "mcpServers": {
+          "context7": {
+            "httpUrl": "https://mcp.context7.com/mcp",
+            "headers": {
+              "CONTEXT7_API_KEY": "{{CONTEXT7_API_KEY}}",
+              "Accept": "application/json, text/event-stream"
+            }
+          }
+        }
+      }
+    },
+    "claude_cli": {
+      "format": "cli_command",
+      "structure": "claude mcp add --transport http context7 https://mcp.context7.com/mcp --header \"CONTEXT7_API_KEY: {{CONTEXT7_API_KEY}}\""
+    }
+  },
+  "api_endpoints": {
+    "search": {
+      "method": "GET",
+      "url": "https://context7.com/api/v2/search",
+      "params": ["query"],
+      "headers": ["Authorization: Bearer {{CONTEXT7_API_KEY}}"]
+    },
+    "docs_code": {
+      "method": "GET",
+      "url": "https://context7.com/api/v2/docs/code/{org}/{project}",
+      "params": ["type", "topic", "page", "limit"],
+      "headers": ["Authorization: Bearer {{CONTEXT7_API_KEY}}"]
+    },
+    "docs_info": {
+      "method": "GET",
+      "url": "https://context7.com/api/v2/docs/info/{org}/{project}",
+      "params": ["type", "topic", "page", "limit"],
+      "headers": ["Authorization: Bearer {{CONTEXT7_API_KEY}}"]
+    }
+  },
+  "deployment_strategy": {
+    "local": {
+      "steps": [
+        "Validate 1Password CLI access",
+        "Retrieve CONTEXT7_API_KEY from vault",
+        "Generate IDE-specific configs",
+        "Backup existing configs",
+        "Deploy new configs",
+        "Validate MCP connectivity"
+      ]
+    },
+    "vps": {
+      "steps": [
+        "Setup SSH key authentication",
+        "Install Context7 dependencies",
+        "Configure Coolify integration",
+        "Deploy MCP server configs",
+        "Setup monitoring",
+        "Validate remote access"
+      ]
+    },
+    "github": {
+      "steps": [
+        "Clone/update senal88/context7 repo",
+        "Version control all configs",
+        "Create modular prompt templates",
+        "Setup automated sync",
+        "Document changes",
+        "Push to remote"
+      ]
+    }
+  },
+  "validation_tests": [
+    {
+      "name": "Context7 API connectivity",
+      "command": "curl -s 'https://context7.com/api/v2/search?query=test' -H 'Authorization: Bearer {{CONTEXT7_API_KEY}}'",
+      "expected": "HTTP 200"
+    },
+    {
+      "name": "MCP server connectivity",
+      "command": "curl -s 'https://mcp.context7.com/mcp' -H 'CONTEXT7_API_KEY: {{CONTEXT7_API_KEY}}'",
+      "expected": "Connection successful"
+    },
+    {
+      "name": "1Password CLI",
+      "command": "op vault list",
+      "expected": "List of vaults"
+    },
+    {
+      "name": "GitHub repo access",
+      "command": "git ls-remote https://github.com/senal88/context7",
+      "expected": "List of refs"
+    }
+  ]
+}
